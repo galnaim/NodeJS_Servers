@@ -34,9 +34,9 @@ function read(fileName) {
 
 http
   .createServer((request, response) => {
-    response.writeHead(200, { "Content-Type": "text/plain" });
-
-    response.end(read(en.txt));
+    response.writeHead(200, { "Content-Type": "application/json" });
+    read("en.txt")
+    response.end();
   })
   .listen(8000);
-//   read(en.txt)
+
