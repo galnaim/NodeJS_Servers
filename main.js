@@ -7,14 +7,6 @@
 import * as http from "http";
 import * as fs from "fs/promises";
 
-// http
-//   .createServer((request, response) => {
-//     response.writeHead(200, { "Content-Type": "application/json" });
-
-//     response.end("Hello");
-//   })
-//   .listen(8000);
-
 function write(fileName, translation) {
   fs.writeFile(`./${fileName}`, JSON.stringify(`${translation}`))
     .then(() => console.log("Done writing"))
@@ -23,7 +15,7 @@ function write(fileName, translation) {
 
 function findWordInDictionary(word) {
   fs.readFile("./translations.json", "utf8").then((data) => {
-      const wordsArr = JSON.parse(data);
+    const wordsArr = JSON.parse(data);
     {
       wordsArr[0].hasOwnProperty(word)
         ? write("./he.txt", wordsArr[0][word])
@@ -39,4 +31,12 @@ function read(fileName) {
     })
     .catch((err) => console.log("Erorr", err));
 }
-read("en.txt");
+
+http
+  .createServer((request, response) => {
+    response.writeHead(200, { "Content-Type": "text/plain" });
+
+    response.end(read(en.txt));
+  })
+  .listen(8000);
+//   read(en.txt)
