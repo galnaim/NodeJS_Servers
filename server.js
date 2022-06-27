@@ -51,10 +51,21 @@ if (title){
   res.send(retrievedProduct));}
   else
   {Product.find()
-  .then((retrievedProduct)=>
-  res.send(retrievedProduct));}
+  .then((retrievedProduct)=>res.send(retrievedProduct))}
+  })
+
+
+app.patch("/products/:productID", (req, res)=>{
+  const {productID} = req.params;
+  Product.findByIdAndUpdate(productID, req.body)
+  .then((retrievedProduct)=>res.send(retrievedProduct))
 })
 
+app.delete("/products/:productID", (req, res)=>{
+  const {productID} = req.params;
+  Product.findByIdAndDelete(productID)
+  .then((Mutzar)=>res.send(Mutzar))
+})
 
 // app.post("/products", (req, res)=>{
 //   const {title, price, description, category, image } = req.body;
@@ -169,3 +180,57 @@ if (title){
 mongoose.connect("mongodb://localhost:27017/ShopGoCode").then(() => {
   app.listen(8000);
 });
+
+
+
+//Ignoer:
+// app.get("/todos", (req, res) => {
+//   const { title } = req.query;
+//   Todo.find().then((todos) => {
+//     const filteredTodos = title
+//       ? todos.filter((todo) =>
+//           todo.title.toLowerCase().includes(title.toLowerCase())
+//         )
+//       : todos;
+
+//     res.send(filteredTodos);
+//   });
+// });
+
+// app.get("/todos/:todoId", (req, res) => {
+//   const { todoId } = req.params;
+//   Todo.findById(todoId)
+//     .then((todo) => {
+//       res.send(todo);
+//     })
+//     .catch((e) => res.send("ERROR!!!!!!!!!!!!!!!"));
+// });
+
+// app.post("/todos", (req, res) => {
+//   const { title } = req.body;
+
+//   Todo.insertMany([
+//     {
+//       title,
+//       completed: false,
+//     },
+//   ]).then((todos) => {
+//     res.send(todos);
+//   });
+// });
+
+// app.patch("/todos/:todoId", (req, res) => {
+//   const { todoId } = req.params;
+
+//   Todo.findByIdAndUpdate(todoId, req.body)
+//     .then((todos) => res.send(todos))
+//     .catch((e) => res.send("ERRORRRRR!!!!!!"));
+// });
+
+// app.delete("/todos/:todoId", (req, res) => {
+//   const { todoId } = req.params;
+
+//   Todo.findByIdAndRemove(todoId)
+//     .then((todo) => res.send(todo))
+//     .catch((e) => res.send("ERRRORRRR!"));
+// });
