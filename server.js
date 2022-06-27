@@ -36,36 +36,34 @@ const Product = mongoose.model("Product", {
 app.get("/products/:productID", (req, res) => {
   const { productID } = req.params;
   Product.findById(productID)
-  .then((retrievedProduct) => {
-    res.send(retrievedProduct);
-  })
-  .catch((e) => res.send("ERROR"))
+    .then((retrievedProduct) => {
+      res.send(retrievedProduct);
+    })
+    .catch((e) => res.send("ERROR"));
 });
 
+app.get("/products", (req, res) => {
+  const { title } = req.query;
+  if (title) {
+    Product.find({ title }).then((retrievedProduct) =>
+      res.send(retrievedProduct)
+    );
+  } else {
+    Product.find().then((retrievedProduct) => res.send(retrievedProduct));
+  }
+});
 
-app.get("/products", (req, res)=>{
-  const {title} = req.query;
-if (title){
-  Product.find({title})
-  .then((retrievedProduct)=>
-  res.send(retrievedProduct));}
-  else
-  {Product.find()
-  .then((retrievedProduct)=>res.send(retrievedProduct))}
-  })
+app.patch("/products/:productID", (req, res) => {
+  const { productID } = req.params;
+  Product.findByIdAndUpdate(productID, req.body).then((retrievedProduct) =>
+    res.send(retrievedProduct)
+  );
+});
 
-
-app.patch("/products/:productID", (req, res)=>{
-  const {productID} = req.params;
-  Product.findByIdAndUpdate(productID, req.body)
-  .then((retrievedProduct)=>res.send(retrievedProduct))
-})
-
-app.delete("/products/:productID", (req, res)=>{
-  const {productID} = req.params;
-  Product.findByIdAndDelete(productID)
-  .then((Mutzar)=>res.send(Mutzar))
-})
+app.delete("/products/:productID", (req, res) => {
+  const { productID } = req.params;
+  Product.findByIdAndDelete(productID).then((Mutzar) => res.send(Mutzar));
+});
 
 // app.post("/products", (req, res)=>{
 //   const {title, price, description, category, image } = req.body;
@@ -180,8 +178,6 @@ app.delete("/products/:productID", (req, res)=>{
 mongoose.connect("mongodb://localhost:27017/ShopGoCode").then(() => {
   app.listen(8000);
 });
-
-
 
 //Ignoer:
 // app.get("/todos", (req, res) => {
